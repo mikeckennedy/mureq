@@ -8,6 +8,7 @@ mureq is copyright 2021 by its contributors and is released under the
 import contextlib
 import io
 import os.path
+import json
 import socket
 import ssl
 import sys
@@ -194,6 +195,22 @@ class Response:
         except UnicodeDecodeError:
             print(f"<{len(self.body)} bytes binary data>", file=buf)
         return buf.getvalue()
+
+    def raise_for_status(self):
+        """Raises :class:`HTTPException`, if one occurred."""
+
+        http_error_msg = ''
+        if 400 <= self.status_code < 500:
+            http_error_msg = f'{self.status_code} - Client error for url: {self.url}'
+
+        elif 500 <= self.status_code < 600:
+            http_error_msg = f'{self.status_code} - Server error for url: {self.url}'
+
+        if http_error_msg:
+            raise HTTPException(http_error_msg)
+
+    def json(self):
+        return json.loads(self.body)
 
 
 class TooManyRedirects(HTTPException):
