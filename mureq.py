@@ -22,8 +22,8 @@ __all__ = ['HTTPException', 'TooManyRedirects', 'Response', 'HTTPMessage',
 
 DEFAULT_TIMEOUT = 15.0
 
-# e.g. "Python 3.8.10"
-DEFAULT_UA = "Python " + sys.version.split()[0]
+# e.g. "mureq v0.1.0 with Python 3.10.1"
+DEFAULT_UA = f"mureq v{__version__} with Python {sys.version.split()[0]}"
 
 
 def request(method, url, *, read_limit=None, **kwargs):
